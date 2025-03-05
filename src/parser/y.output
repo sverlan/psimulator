@@ -1,0 +1,335 @@
+   0  $accept : Start $end
+
+   1  Start : CNAME Conf RNAME RuleList
+
+   2  RuleList : Rule
+   3           | RuleList Rule
+
+   4  Rule : Conf TO Conf ';' SetConf ';' SetConf
+
+   5  SetConf : '{' '}'
+   6          | '{' SetConfList '}'
+
+   7  SetConfList : NEConf
+   8              | SetConfList ',' NEConf
+
+   9  Conf :
+  10       | Conf Cell
+
+  11  NEConf : Cell
+  12         | NEConf Cell
+
+  13  Cell : '(' NB ',' Multiset ')'
+
+  14  Multiset :
+  15           | Multiset MElement
+
+  16  MElement : ID
+  17           | '[' ID ',' NB ']'
+
+state 0
+	$accept : . Start $end  (0)
+
+	CNAME  shift 1
+	.  error
+
+	Start  goto 2
+
+
+state 1
+	Start : CNAME . Conf RNAME RuleList  (1)
+	Conf : .  (9)
+
+	.  reduce 9
+
+	Conf  goto 3
+
+
+state 2
+	$accept : Start . $end  (0)
+
+	$end  accept
+
+
+state 3
+	Start : CNAME Conf . RNAME RuleList  (1)
+	Conf : Conf . Cell  (10)
+
+	RNAME  shift 4
+	'('  shift 5
+	.  error
+
+	Cell  goto 6
+
+
+state 4
+	Start : CNAME Conf RNAME . RuleList  (1)
+	Conf : .  (9)
+
+	.  reduce 9
+
+	Conf  goto 7
+	RuleList  goto 8
+	Rule  goto 9
+
+
+state 5
+	Cell : '(' . NB ',' Multiset ')'  (13)
+
+	NB  shift 10
+	.  error
+
+
+state 6
+	Conf : Conf Cell .  (10)
+
+	.  reduce 10
+
+
+state 7
+	Rule : Conf . TO Conf ';' SetConf ';' SetConf  (4)
+	Conf : Conf . Cell  (10)
+
+	TO  shift 11
+	'('  shift 5
+	.  error
+
+	Cell  goto 6
+
+
+state 8
+	Start : CNAME Conf RNAME RuleList .  (1)
+	RuleList : RuleList . Rule  (3)
+	Conf : .  (9)
+
+	$end  reduce 1
+	TO  reduce 9
+	'('  reduce 9
+
+	Conf  goto 7
+	Rule  goto 12
+
+
+state 9
+	RuleList : Rule .  (2)
+
+	.  reduce 2
+
+
+state 10
+	Cell : '(' NB . ',' Multiset ')'  (13)
+
+	','  shift 13
+	.  error
+
+
+state 11
+	Rule : Conf TO . Conf ';' SetConf ';' SetConf  (4)
+	Conf : .  (9)
+
+	.  reduce 9
+
+	Conf  goto 14
+
+
+state 12
+	RuleList : RuleList Rule .  (3)
+
+	.  reduce 3
+
+
+state 13
+	Cell : '(' NB ',' . Multiset ')'  (13)
+	Multiset : .  (14)
+
+	.  reduce 14
+
+	Multiset  goto 15
+
+
+state 14
+	Rule : Conf TO Conf . ';' SetConf ';' SetConf  (4)
+	Conf : Conf . Cell  (10)
+
+	';'  shift 16
+	'('  shift 5
+	.  error
+
+	Cell  goto 6
+
+
+state 15
+	Cell : '(' NB ',' Multiset . ')'  (13)
+	Multiset : Multiset . MElement  (15)
+
+	ID  shift 17
+	')'  shift 18
+	'['  shift 19
+	.  error
+
+	MElement  goto 20
+
+
+state 16
+	Rule : Conf TO Conf ';' . SetConf ';' SetConf  (4)
+
+	'{'  shift 21
+	.  error
+
+	SetConf  goto 22
+
+
+state 17
+	MElement : ID .  (16)
+
+	.  reduce 16
+
+
+state 18
+	Cell : '(' NB ',' Multiset ')' .  (13)
+
+	.  reduce 13
+
+
+state 19
+	MElement : '[' . ID ',' NB ']'  (17)
+
+	ID  shift 23
+	.  error
+
+
+state 20
+	Multiset : Multiset MElement .  (15)
+
+	.  reduce 15
+
+
+state 21
+	SetConf : '{' . '}'  (5)
+	SetConf : '{' . SetConfList '}'  (6)
+
+	'}'  shift 24
+	'('  shift 5
+	.  error
+
+	Cell  goto 25
+	NEConf  goto 26
+	SetConfList  goto 27
+
+
+state 22
+	Rule : Conf TO Conf ';' SetConf . ';' SetConf  (4)
+
+	';'  shift 28
+	.  error
+
+
+state 23
+	MElement : '[' ID . ',' NB ']'  (17)
+
+	','  shift 29
+	.  error
+
+
+state 24
+	SetConf : '{' '}' .  (5)
+
+	.  reduce 5
+
+
+state 25
+	NEConf : Cell .  (11)
+
+	.  reduce 11
+
+
+state 26
+	SetConfList : NEConf .  (7)
+	NEConf : NEConf . Cell  (12)
+
+	'('  shift 5
+	'}'  reduce 7
+	','  reduce 7
+
+	Cell  goto 30
+
+
+state 27
+	SetConf : '{' SetConfList . '}'  (6)
+	SetConfList : SetConfList . ',' NEConf  (8)
+
+	'}'  shift 31
+	','  shift 32
+	.  error
+
+
+state 28
+	Rule : Conf TO Conf ';' SetConf ';' . SetConf  (4)
+
+	'{'  shift 21
+	.  error
+
+	SetConf  goto 33
+
+
+state 29
+	MElement : '[' ID ',' . NB ']'  (17)
+
+	NB  shift 34
+	.  error
+
+
+state 30
+	NEConf : NEConf Cell .  (12)
+
+	.  reduce 12
+
+
+state 31
+	SetConf : '{' SetConfList '}' .  (6)
+
+	.  reduce 6
+
+
+state 32
+	SetConfList : SetConfList ',' . NEConf  (8)
+
+	'('  shift 5
+	.  error
+
+	Cell  goto 25
+	NEConf  goto 35
+
+
+state 33
+	Rule : Conf TO Conf ';' SetConf ';' SetConf .  (4)
+
+	.  reduce 4
+
+
+state 34
+	MElement : '[' ID ',' NB . ']'  (17)
+
+	']'  shift 36
+	.  error
+
+
+state 35
+	SetConfList : SetConfList ',' NEConf .  (8)
+	NEConf : NEConf . Cell  (12)
+
+	'('  shift 5
+	'}'  reduce 8
+	','  reduce 8
+
+	Cell  goto 30
+
+
+state 36
+	MElement : '[' ID ',' NB ']' .  (17)
+
+	.  reduce 17
+
+
+15 terminals, 11 nonterminals
+18 grammar rules, 37 states

@@ -1,0 +1,27 @@
+image: openjdk:17-jdk-slim
+
+before_script:
+  - apt-get update && apt-get install -y ant
+  
+stages:
+  - build
+  - test
+  - deploy
+
+build:
+  stage: build
+  script:
+    - ant compile
+
+test:
+  stage: test
+  script:
+    - ant test
+    
+deploy:
+  stage: deploy
+  script:
+    - ant deploy
+  artifacts:
+    paths:
+      - dist/
