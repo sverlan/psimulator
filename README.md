@@ -14,7 +14,7 @@ PSimulator is a command-line simulator for P systems. This tool simulates Networ
 
 ## Prerequisites
 
-- **Java Runtime Environment:** Ensure you have Java installed on your system. 
+- **Java Runtime Environment:** Ensure you have Java installed on your system (min Java 17). 
 
 ## Installation
 
