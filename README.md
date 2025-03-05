@@ -2,7 +2,7 @@
 
 ## Overview
 
-PSimulator is a command-line simulator for P systems. This tool simulates P system operations based on a user-defined input file containing the system configuration and rewriting rules. Optionally, the simulation can generate a state graph for further analysis.
+PSimulator is a command-line simulator for P systems. This tool simulates Network of Cells model that has bisimulations with most variants of P systems, see [the tutorial paper](https://link.springer.com/chapter/10.1007/978-3-642-54239-8_6) for more details. Optionally, the simulation can generate a state graph for further analysis.
 
 
 ## Features
