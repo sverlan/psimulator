@@ -24,7 +24,7 @@ PSimulator is a command-line simulator for P systems. This tool simulates Networ
 
 ## Compiling from source
 
-After checkout use `ant compile` and then `ant build`.
+After checkout use `ant compile` and then `ant deploy`.
 
 ## Usage
 
