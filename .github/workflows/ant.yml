@@ -27,6 +27,6 @@ jobs:
       uses: actions/upload-artifact@v4.6.1
       with:
         name: psimulator
-        path: build/psimulator2.jar
+        path: dist/PSimulator2.jar
 
           
